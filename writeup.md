@@ -18,7 +18,7 @@ The goals / steps of this project are the following:
 [image1]: ./examples/grayscale.png "Grayscale"
 [image2]: ./examples/candidates.png "Candidate lines"
 [image3]: ./examples/twoLines.png "One line per side"
-[image4]: ./examples/finalimage.png "Final image"
+[image4]: ./examples/finalImage.png "Final image"
 [image5]: ./examples/problemLine.png "Line Estimation Error"
 
 ---
