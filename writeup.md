@@ -53,7 +53,7 @@ There was an outright error which occurred in the yellow example movie.  A short
 
 I encountered another likely limitation of this method came up during my first experience in a car offering semi-autonomous driving this week.  In a construction zone, the dashed lane lines were replaced with staggered series of reflectors.  These were positioned such that they mimicked dashed white lines, however the car itself could not recognize them at all, and disabled its autonomous driving function completely.  I could imagine that the multiple gaps between reflectors could make it difficult for the Hough Line process to accurately identify them as line segments, despite its success in managing the gaps between the dashed lines.  Reducing the minimum line sgement threshold to a small enough value that would allow the reflectors to be recognized could cause a large increase in false positives being triggered by any small white object without sufficient management.
 
-###3. Suggest possible improvements to your pipeline
+###3. Possible improvements to the pipeline
 
 There are a number of things which could improve the process as it currently stands.  Rather than creating a straight line per side, using a Bézier curve to represent the lines would more accurately reflect reality.  The two lanes could be better represented by effectively parallel curves, transformed to account for the vanishing perspective of the road.
 
