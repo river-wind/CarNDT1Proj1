@@ -21,7 +21,7 @@ The goals / steps of this project were:
 
 ### Reflection
 
-###1. The pipeline I have created takes 5 main steps, most of which were reviewed earlier in this lesson to one degree or another.
+###1. The pipeline I have created takes 6 main steps, most of which were reviewed earlier in this lesson to one degree or another.
 ####a.      First, the image is simplified down to greyscale to reduce the complexity of the problem.
 ![alt text][image1]
 ####b.	    Next, the image is blurred with the gaussian_blur function to reduce image noise, using an odd-numbered kernel.
@@ -44,19 +44,19 @@ To resolve these limitations, I first found the line slopes and y intercepts.  R
 To reduce the multiple lines per side to a single line per side, I built 4 lists of extrapolated x values.  A list for the right line's x value at the top of the region of interest (in this case 325 pixels), one for the x values at the bottom of the image (maximum y), as well as the left line's top x and bottom x points.  Once I had these four lists, I could take the mean value of each, leaving me with four points: the top and bottom points for the new left line, and the top and bottom for the right line.  Those can then be used in conjunction with the cv2.line() function to draw the new lane lines onto the blacked out image from step e in the pipeline.
 
 
-###2. Identify potential shortcomings with your current pipeline
+###2. Potential shortcomings with the current pipeline
 
-This pipeline has a number of limitations, including falling victim to low-contrast conditions such as would occur during a rain or snowstorm.  It also relies on a straight line for lane predictions; strongly curving roads would not produce a very positive result.  Steep uphills will result in the road taking up a larger portion of the image than normal, which would cause the region_of_interest() function to improperly cut out important information through its use of a hard-coded upper threshold.
-
-I encountered another likely limitation of this method came up during my first experience in a car offering semi-autonomous driving.  In a construction zone, the dashed lane lines were replaced with staggered series of reflectors.  These were positioned such that they mimicked dashed white lines, however the car itself could not recognize them at all, and disabled itself.  I could image that the multiple gaps between reflectors could make it difficult for the Hough Line process to accurately identify them as line segments.
+This pipeline has a number of limitations, including falling victim to low-contrast conditions such as would occur during a rain or snowstorm.  It also relies on a straight line for lane predictions; strongly curving roads would not produce a very accurate prediction.  Steep uphills will result in the road taking up a larger portion of the image than normal, which would cause the region_of_interest() function to improperly ignore important information through its use of a hard-coded upper threshold.
 
 There was an outright error which occurred in the yellow example movie.  A short white line crossing the yellow perpendicularly caused the prediction to go completely wrong, rotating the line 90 degrees from the correct direction.
 ![alt text][image5]
 
+I encountered another likely limitation of this method came up during my first experience in a car offering semi-autonomous driving this week.  In a construction zone, the dashed lane lines were replaced with staggered series of reflectors.  These were positioned such that they mimicked dashed white lines, however the car itself could not recognize them at all, and disabled its autonomous driving function completely.  I could imagine that the multiple gaps between reflectors could make it difficult for the Hough Line process to accurately identify them as line segments, despite its success in managing the gaps between the dashed lines.  Reducing the minimum line sgement threshold to a small enough value that would allow the reflectors to be recognized could cause a large increase in false positives being triggered by any small white object without sufficient management.
+
 ###3. Suggest possible improvements to your pipeline
 
-There are a number of things which could improve the process as it currently stands.  Rather than creating a straight line per side, using a Bézier curve to represent the lanes would more accurately reflect reality.  The two lanes would need to be represented by effectively parallel curves, transformed to account for the vanishing perspective of the road.
+There are a number of things which could improve the process as it currently stands.  Rather than creating a straight line per side, using a Bézier curve to represent the lines would more accurately reflect reality.  The two lanes could be better represented by effectively parallel curves, transformed to account for the vanishing perspective of the road.
 
-In addition, by reducing the image to greyscale, the processing is simplified, but data is lost.  By running the process against the three color channels instead, and averaging the resulting predictions, we could increase the accuracy of the result.
+In addition, by reducing the image to greyscale, the processing is simplified, but data is lost.  Running the process against the three color channels individually and averaging the three resulting predictions instead could increase the accuracy of the final result.
 
-Lastly, to resolve the erroneous prediction which occurred in the yellow line example, the line predictions could either be artificially limited to a certain angle range, or the predictions could be averaged across frames to reduce the chance for wide variation occurring rapidly due to what amounts to noise across frames.  The former solution would resolve this issue, but would cause actual crossing lane lines or cross walks to be ignored.  Averaging across frames could resolve individual frame errors as well as reduce the impact of a few frames of strange noise, but a cross-walk like situation would still not be handled.  In the end, a combination of processes would be needed to eliminate this error while not ignoring important perpendicular lines.
+Lastly, to resolve the erroneous prediction which occurred in the yellow line example, the line predictions could either be artificially limited to a certain angle range, or the predictions could be averaged across frames to reduce the chance for wide prediction swings occurring rapidly due to what amounts to noise across frames.  The former solution would resolve this issue but would cause actual crossing lane lines or cross walks to be ignored.  Averaging across frames could resolve individual frame errors as well as reduce the impact of a few frames of strange noise, but a cross-walk like situation would still not be handled.  In the end, a combination of processes would be needed to eliminate this error while not ignoring important perpendicular lines.
